@@ -1,0 +1,18 @@
+{% load static %}
+<html>
+<head>
+   <link rel="stylesheet" type="text/css" href="{% static '/styles.css' %}">
+</head>
+<body>
+  <div class="bg-image-for-register-page"></div>
+  <div class="text-for-register-page">
+    <form action="/userRegistered/" method="post">{% csrf_token %}
+      <label for="register">Your name: </label>
+      <input id="register" type="text" name="username" value="{{username}}"> <br>
+      <label for="password1"> Password: </label>
+      <input id="password1" type="text" name="password" value = "{{password}}" > <br>
+      <input type="submit" value="Register" name="submit">
+  </form>
+</div>
+</body>
+</html>

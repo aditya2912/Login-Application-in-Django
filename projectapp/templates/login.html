@@ -1,0 +1,31 @@
+{% load static %}
+<html>
+<head>
+   <link rel="stylesheet" type="text/css" href="{% static '/styles1.css' %}">
+</head>
+<body>
+<form action="/userLogin/" method="POST"> {% csrf_token %}
+<div class="login">
+<div class="login-screen">
+<div class="app-title">
+<h1>Login</h1>
+</div>
+<div class="login-form">
+<div class="control-group">
+  <label for="login"> </label>
+  <input id="login" class="login-field" placeholder="username" type="text" name="username" value="{{username}}"> <br>
+<label class="login-field-icon fui-user" for="login-name"></label>
+</div>
+<div class="control-group">
+  <label for="password1"></label>
+  <input id="password1" class="login-field" placeholder="password" type="text" name="password" value="{{password}}"> <br>
+<label class="login-field-icon fui-lock" for="login-pass"></label></div>
+<input type="submit" value="Login" name="submit1234" class="btn btn-primary btn-large btn-block">
+
+
+</div>
+</div>
+</div>
+</form>
+</body>
+</html>

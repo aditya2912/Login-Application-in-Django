@@ -1,0 +1,23 @@
+
+<html>
+<body>
+    <h1> Welcome </h1>
+    <h2> Click on the appropriate option </h2>
+    <form action="/enterUserDetailsPage/" method="post">{% csrf_token %}
+        <input type="submit" name="Enter User Details" value="Enter User Details">
+    </form>
+    
+    <form action="/viewUserDetails/" method="post"> {% csrf_token %}
+       <input type="submit" name="View User Details" value="View User Details">
+    </form>
+    
+    <form action="/updateUserDetails/" method="post"> {% csrf_token %}
+       <input type="submit" name="Update User Details" value="Update User Details">
+    </form>
+ 
+    <form action="/deleteUser/" method="post">{% csrf_token %}
+       <input type="submit" name="Delete User" value="Delete User">
+    </form>
+    
+</body>
+</html>
