@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from re import sub
+from rest_framework.authtoken.models import Token
+from django.utils.functional import SimpleLazyObject
 from django.http import HttpResponseRedirect
 from .forms import NameForm, UserData, UserDetailsForm, UserDetails
 from sqlalchemy import create_engine
@@ -20,6 +23,19 @@ def insertValuesIntoDatabase(username, password):
    except IOError:
        print("Unable to save data")
 
+        
+def requestUsernameFromSession(request):
+    header_token = request.META.get('HTTP_AUTHORIZATION', None)
+    if header_token is not None:
+      try:
+        token = sub('Token ', '', request.META.get('HTTP_AUTHORIZATION', None))
+        tokenObject = Token.object.get(key = token)
+        request.user = tokenObject.user
+      except Token.DoesNotExist:
+        pass
+    print(request.user)
+         
+    
 
 def insertValuesIntoUserDetailsDatabase(name, residence, email, phoneNumber):
     userDetailsEngine = create_engine('sqlite:///UserDetailsDatabase.db')
@@ -118,6 +134,7 @@ def userLogin(request):
          if form.is_valid():
              username = form.cleaned_data.get("username")
              password = form.cleaned_data.get("password")
+             request.session['username'] = username
              engine = create_engine('sqlite:///UserDatabase.db')
              conn = engine.connect()
              Base = declarative_base()
@@ -126,7 +143,8 @@ def userLogin(request):
              session = DBSession()
              query = session.query(UserData).filter(UserData.username.in_([username]), UserData.password.in_([password]) )
              result = query.first()
-             if result:
+             if result and request.session.has_key('username'):
+                 username = request.session['username']
                  print("Login Successful")
                  return render(request, 'HomePage.html', {"form" : form})
              else:
@@ -139,6 +157,14 @@ def userLogin(request):
 
 
 def enterUserDetails(request):
+#    if request.user.is_authenticated():
+    sessionName = requestUsernameFromSession(request)
+    user = request.user
+#    request.custom_prop = SimpleLazyObject(lambda: user)
+    print("######################")
+#    print(request.custom_prop)
+#    else:
+#        print("*********************")
     submitButton = request.POST.get("submit")
     name = ""
     residence = ""
