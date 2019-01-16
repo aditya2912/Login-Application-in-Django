@@ -8,6 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
 from sqlalchemy.ext.declarative import declarative_base
+
+
 # Create your views here.
 def insertValuesIntoDatabase(username, password):
    engine = create_engine('sqlite:///UserDatabase.db')
@@ -23,17 +25,7 @@ def insertValuesIntoDatabase(username, password):
    except IOError:
        print("Unable to save data")
 
-        
-def requestUsernameFromSession(request):
-    header_token = request.META.get('HTTP_AUTHORIZATION', None)
-    if header_token is not None:
-      try:
-        token = sub('Token ', '', request.META.get('HTTP_AUTHORIZATION', None))
-        tokenObject = Token.object.get(key = token)
-        request.user = tokenObject.user
-      except Token.DoesNotExist:
-        pass
-    print(request.user)
+
          
     
 
@@ -144,7 +136,7 @@ def userLogin(request):
              query = session.query(UserData).filter(UserData.username.in_([username]), UserData.password.in_([password]) )
              result = query.first()
              if result and request.session.has_key('username'):
-                 username = request.session['username']
+                 request.session['username'] = username 
                  print("Login Successful")
                  return render(request, 'HomePage.html', {"form" : form})
              else:
@@ -157,14 +149,6 @@ def userLogin(request):
 
 
 def enterUserDetails(request):
-#    if request.user.is_authenticated():
-    sessionName = requestUsernameFromSession(request)
-    user = request.user
-#    request.custom_prop = SimpleLazyObject(lambda: user)
-    print("######################")
-#    print(request.custom_prop)
-#    else:
-#        print("*********************")
     submitButton = request.POST.get("submit")
     name = ""
     residence = ""
@@ -192,14 +176,78 @@ def enterUserDetailsPage(request):
     return render(request, 'userLoggedIn.html', {})
 
 
-def viewUserDetails(request):
-#    viewUserDetailsButton = 'POST'
-#    engine = create_engine('sqlite:///UserDetailsDatabase.db')
-#    conn = engine.connect()
-#    Base = declarative_base()
-#    Base.metadata.bind = engine
-#    DBSession= sessionmaker(bind = engine)
-#    session = DBSession()
-#    fetchDataQuery = 
-#    session.query(UserDetails).filter(UserDetails.username.in_([]))
-      return render(request, 'userLoggedIn.html', {})
+def viewUserDetails(request):     
+    form = UserDetailsForm(request.POST)
+    if 'username' in request.session:
+      sessionUsername = request.session['username'] 
+      
+    else: 
+      sessionUserName = ""
+    
+    engine = create_engine('sqlite:///UserDetailsDatabase.db')
+    Base = declarative_base()
+    Base.metadata.bind = engine
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    userRecord = session.query(UserDetails).filter(UserDetails.name == sessionUsername).first()
+    
+    return render(request, 'userDetails.html', {"username" : sessionUsername, "residence" : userRecord.residence, "email" : userRecord.email, "phoneNumber" : userRecord.phoneNumber})
+
+
+def updateUserDetails(request):
+    form = UserDetailsForm(request.POST)
+    if 'username' in request.session:
+      sessionUsername = request.session['username'] 
+      
+    else: 
+      sessionUserName = ""
+    
+    engine = create_engine('sqlite:///UserDetailsDatabase.db')
+    Base = declarative_base()
+    Base.metadata.bind = engine
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    userRecord = session.query(UserDetails).filter(UserDetails.name == sessionUsername).first()
+    
+    return render(request , 'updateUserDetails.html', {"name" : userRecord.name, "residence" : userRecord.residence, "email" : userRecord.email, "phoneNumber" : userRecord.phoneNumber})
+
+
+def submitUpdatedUserDetails(request):
+    updateButton = request.POST.get("submit")
+    updatedName = ""
+    updatedResidence = ""
+    updatedEmail = ""
+    updatedPhoneNumber = ""
+    if 'username' in request.session:
+      sessionUsername = request.session['username'] 
+      
+    else: 
+      sessionUserName = ""
+    
+    if request.method == 'POST':
+        form = UserDetailsForm(request.POST)
+        if form.is_valid():
+            updatedName = form.cleaned_data.get("name")
+            updatedResidence = form.cleaned_data.get("residence")
+            updatedEmail = form.cleaned_data.get("email")
+            updatedPhoneNumber = form.cleaned_data.get("phoneNumber")
+            engine = create_engine('sqlite:///UserDetailsDatabase.db')
+            Base = declarative_base()
+            Base.metadata.bind = engine
+            DBSession = sessionmaker(bind = engine)
+            DBSession.bind = engine
+            session = DBSession()
+            session.query(UserDetails).all()
+            user = session.query(UserDetails).filter(UserDetails.name == sessionUsername).first()
+            user.name = updatedName
+            user.residence = updatedResidence
+            user.email = updatedEmail
+            user.phoneNumber = updatedPhoneNumber
+            session.commit()
+            request.session['username'] = updatedName
+            print(user.name)
+            print(user.residence)
+        else:
+            form = UserDetailsForm()     
+        return render(request, 'HomePage.html', {})
+            
