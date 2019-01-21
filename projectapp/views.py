@@ -131,7 +131,7 @@ def enterUserDetails(request):
         else:
             form = UserDetailsForm()
 
-    return render(request, 'enterUserDetails.html', {"form" :form} )
+    return render(request, 'HomePage.html', {"form" :form} )
 
 
 def enterUserDetailsPage(request):
@@ -218,6 +218,4 @@ def logOut(request):
       del request.session['username']
       return render(request, 'hello.html', {})
     except IOError:
-        print("***********************")
-        print("Unable to logout")
         return render(request, 'invalidCredentials.html', {})
