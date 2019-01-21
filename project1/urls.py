@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from projectapp.views import hello, login, registerPage, registerUser, loginPage, userLogin, enterUserDetails, enterUserDetailsPage, viewUserDetails , updateUserDetails, submitUpdatedUserDetails
+from projectapp.views import hello, login, registerPage, registerUser, loginPage, userLogin, enterUserDetails, enterUserDetailsPage, viewUserDetails , updateUserDetails, submitUpdatedUserDetails, logOut
 
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     path(r'enterUserDetailsPage/', enterUserDetailsPage),
     path(r'viewUserDetails/', viewUserDetails),
     path(r'updateUserDetails/', updateUserDetails),
-    path(r'submitUpdatedUserDetails/', submitUpdatedUserDetails)
+    path(r'submitUpdatedUserDetails/', submitUpdatedUserDetails),
+    path(r'logOut/', logOut)
 ]

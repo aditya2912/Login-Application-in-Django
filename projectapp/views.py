@@ -21,54 +21,22 @@ def insertValuesIntoDatabase(username, password):
    session.add(userData)
    try:
       session.commit()
-      print("Data inserted successfully")
    except IOError:
        print("Unable to save data")
 
-
-         
+def insertValuesIntoUserDetailsDatabase(name, residence, email, phoneNumber, sessionUsername):
     
-
-def insertValuesIntoUserDetailsDatabase(name, residence, email, phoneNumber):
     userDetailsEngine = create_engine('sqlite:///UserDetailsDatabase.db')
     Base = declarative_base()
     Base.metadata.bind = userDetailsEngine
     DBSession = sessionmaker(bind= userDetailsEngine)
     session = DBSession()
-    userDetails = UserDetails(name=name, residence=residence, email=email, phoneNumber=phoneNumber)
+    userDetails = UserDetails(name=name, residence=residence, email=email, phoneNumber=phoneNumber, userName = sessionUsername)
     session.add(userDetails)
     try:
         session.commit()
-        print("Data inserted successfully")
     except IOError:
         print("unable to save data")
-
-# Just to check whether data is actually being inserted or not
-def readDataFromDataBase():
-    engine = create_engine('sqlite:///UserDatabase.db')
-    Base = declarative_base()
-    Base.metadata.bind = engine
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    session.query(UserData).all()
-    user = session.query(UserData).first()
-    print(user.username)
-    print(user.password)
-
-def readDataFromUserDetailsDatabase():
-    engine = create_engine('sqlite:///UserDetailsDatabase.db')
-    Base = declarative_base()
-    Base.metadata.bind = engine
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    session.query(UserDetails).all()
-    user = session.query(UserDetails).first()
-    print(user.name)
-    print(user.residence)
-    print(user.email)
-    print(user.phoneNumber)
-
-
 
 def hello(request):
     return render( request, "C:/pythonprograms/project1/projectapp/templates/hello.html", {})
@@ -84,8 +52,6 @@ def login(request):
            username = form.cleaned_data.get("your_name")
            password = form.cleaned_data.get("password")
            insertValuesIntoDatabase(username, password)
-           readDataFromDataBase()
-
      else:
          form = NameForm()
 
@@ -109,7 +75,6 @@ def registerUser(request):
                  username = form.cleaned_data.get("username")
                  password = form.cleaned_data.get("password")
                  insertValuesIntoDatabase(username, password)
-                 readDataFromDataBase()
          else:
              form = NameForm()
 
@@ -119,7 +84,6 @@ def userLogin(request):
      registerButton = 'POST'
      username = ""
      password = ""
-     canUserLogIn = False
 
      if request.method == 'POST':
          form = NameForm(request.POST)
@@ -137,10 +101,8 @@ def userLogin(request):
              result = query.first()
              if result and request.session.has_key('username'):
                  request.session['username'] = username 
-                 print("Login Successful")
                  return render(request, 'HomePage.html', {"form" : form})
              else:
-                 print("Invalid Credentials")
                  return render(request, 'invalidCredentials.html', {})
 
      else:
@@ -154,6 +116,7 @@ def enterUserDetails(request):
     residence = ""
     email = ""
     phoneNumber = ""
+    sessionUsername = request.session['username']
 
 
     if request.method == 'POST':
@@ -163,8 +126,7 @@ def enterUserDetails(request):
             residence = form.cleaned_data.get("residence")
             email = form.cleaned_data.get("email")
             phoneNumber = form.cleaned_data.get("phoneNumber")
-            insertValuesIntoUserDetailsDatabase(name, residence, email, phoneNumber)
-            readDataFromUserDetailsDatabase()
+            insertValuesIntoUserDetailsDatabase(name, residence, email, phoneNumber, sessionUsername)
 
         else:
             form = UserDetailsForm()
@@ -179,17 +141,16 @@ def enterUserDetailsPage(request):
 def viewUserDetails(request):     
     form = UserDetailsForm(request.POST)
     if 'username' in request.session:
-      sessionUsername = request.session['username'] 
-      
+      sessionUsername = request.session['username']      
     else: 
-      sessionUserName = ""
-    
+      sessionUsername = ""
     engine = create_engine('sqlite:///UserDetailsDatabase.db')
+    conn = engine.connect()
     Base = declarative_base()
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
-    userRecord = session.query(UserDetails).filter(UserDetails.name == sessionUsername).first()
+    userRecord = session.query(UserDetails).filter(UserDetails.userName.in_([sessionUsername])).first()    
     
     return render(request, 'userDetails.html', {"username" : sessionUsername, "residence" : userRecord.residence, "email" : userRecord.email, "phoneNumber" : userRecord.phoneNumber})
 
@@ -200,14 +161,15 @@ def updateUserDetails(request):
       sessionUsername = request.session['username'] 
       
     else: 
-      sessionUserName = ""
+      sessionUsername = ""
     
     engine = create_engine('sqlite:///UserDetailsDatabase.db')
+    conn = engine.connect()
     Base = declarative_base()
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
-    userRecord = session.query(UserDetails).filter(UserDetails.name == sessionUsername).first()
+    userRecord = session.query(UserDetails).filter(UserDetails.userName == sessionUsername).first()
     
     return render(request , 'updateUserDetails.html', {"name" : userRecord.name, "residence" : userRecord.residence, "email" : userRecord.email, "phoneNumber" : userRecord.phoneNumber})
 
@@ -222,7 +184,7 @@ def submitUpdatedUserDetails(request):
       sessionUsername = request.session['username'] 
       
     else: 
-      sessionUserName = ""
+      sessionUsername = ""
     
     if request.method == 'POST':
         form = UserDetailsForm(request.POST)
@@ -238,16 +200,24 @@ def submitUpdatedUserDetails(request):
             DBSession.bind = engine
             session = DBSession()
             session.query(UserDetails).all()
-            user = session.query(UserDetails).filter(UserDetails.name == sessionUsername).first()
+            user = session.query(UserDetails).filter(UserDetails.userName == sessionUsername).first()
             user.name = updatedName
             user.residence = updatedResidence
             user.email = updatedEmail
             user.phoneNumber = updatedPhoneNumber
             session.commit()
-            request.session['username'] = updatedName
             print(user.name)
             print(user.residence)
         else:
             form = UserDetailsForm()     
         return render(request, 'HomePage.html', {})
             
+
+def logOut(request):
+    try:
+      del request.session['username']
+      return render(request, 'hello.html', {})
+    except IOError:
+        print("***********************")
+        print("Unable to logout")
+        return render(request, 'invalidCredentials.html', {})

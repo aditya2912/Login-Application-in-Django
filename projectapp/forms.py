@@ -1,5 +1,5 @@
 from django import forms
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -28,6 +28,8 @@ class UserDetails(Base):
     residence = Column(String, nullable=False)
     email = Column(String, nullable=False)
     phoneNumber = Column(String, nullable=False)
+    userName = Column(Integer, ForeignKey('user.username'))
+    user = relationship(UserData)
 
 
 engine = create_engine('sqlite:///UserDatabase.db')

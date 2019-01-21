@@ -107,3 +107,10 @@ body, html {
    width: 500px;
 
 }
+
+.leftPadding{
+    position: relative;
+    left: 1250px;
+    bottom: 45px;
+    color: red;
+}
