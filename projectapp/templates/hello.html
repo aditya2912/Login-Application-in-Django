@@ -6,13 +6,6 @@
 <body>
   <div class="bg-image"></div>
   <div class="bg-text">
-    <!-- <form action="/your-name/" method="post">{% csrf_token %}
-      <label for="your_name">Your name: </label>
-      <input id="your_name" type="text" name="your_name" value="{{ current_name }}"> <br>
-      <label for="password"> Password: </label>
-      <input id ="password" type="text" name="password" value = "{{password}}" >
-      <input type="submit" value="OK" name="submit">
-  </form> -->
   <form action="/login/" method="post">{% csrf_token %}
   <input type="submit" value="Login" name="Login" class="button button1">
   </form>

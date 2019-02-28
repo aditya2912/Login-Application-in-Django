@@ -1,0 +1,29 @@
+{% load static %}
+<html>
+ <head>
+     <link rel="stylesheet" type="text/css" href="{% static '/rubricStyles.css' %}">
+ </head>
+<body>
+    <form action="/adminLogOut/" method="post">{% csrf_token %}
+     <input type="submit" name="log out" value="Log Out" class="btn">       
+    </form>
+    <form action="/viewRubricsForUser/" method="POST">{% csrf_token %}
+    <label for="EnterUsername" > </label>
+        
+    <input id="EnterUsername" type="text" name="userName" class="input-field" id="userName">
+        
+    <input type="submit" value="View Rubric" name="View Rubric" class="btn btn-primary btn-large btn-block" >
+        
+    </form>
+    
+    <form action="/deleteUser/" method="post"> {% csrf_token %}
+    <label for="EnterUsername" > </label>
+        
+    <input id="Enter Username" type="text" name="userName" class="input-field" id="userName">
+    
+    <input type="submit" value="Delete User" name="View Rubric" class="btn btn-primary btn-large btn-block" >
+        
+    </form>
+      
+  </body>
+</html>

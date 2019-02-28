@@ -1,0 +1,130 @@
+
+* {
+    box-sizing: border-box;
+}
+
+*:focus {
+    outline: none;
+}
+
+body {
+    background-color: darkgray;
+}
+
+
+.input-field {
+    position: relative;
+    text-align: center;
+    background-color: #ECF0F1;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 0;
+    align-self: center;
+    width: 750px;
+    height: 35px;
+    transition: border .5s;
+    left: 100px;
+    top : 20px;
+}
+
+.title-text {
+    position: relative;
+    left: 450px;
+    top: 20px;
+}
+
+.criteria {
+    position: relative;
+    background-color: #ECF0F1;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 0;
+    align-self: center;
+    width: 150px;
+    height: 35px;
+    transition: border .5s;
+    left: 25px;
+    top : 60px;
+}
+
+.proficiency {
+    position: relative;
+    background-color: #ECF0F1;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 0;
+    align-self: center;
+    width: 150px;
+    height: 300px;
+    transition: border .5s;
+    left: 25px;
+    top : 80px;
+}
+
+.div-alignment {
+    left: 50px;
+}
+
+
+.btn {
+    position: relative;
+    border: 2px solid transparent;
+    background: #3498DB;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 25px;
+    padding: 10px 0;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 3px;
+    box-shadow: none;
+    transition: 0.25s;
+    display: block;
+    width: 100px;
+    height: 50px;
+    margin: 0 auto;
+    left: 45px;
+}
+
+.column {
+    float: left;
+    width: 70%;
+    padding: 10px;
+    height: 300px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.admin-text-box {
+    position: relative;
+    text-align: center;
+    background-color: #ECF0F1;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 0;
+    align-self: center;
+    width: 750px;
+    height: 35px;
+    transition: border .5s;
+    left: 100px;
+    top: 2px;
+}
+
+.paddingForLogOut {
+    position: relative;
+    left: 1px;
+    bottom: 45px;
+    color: red;
+}

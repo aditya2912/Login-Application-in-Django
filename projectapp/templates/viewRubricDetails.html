@@ -1,0 +1,30 @@
+{% load static %}
+<html> 
+ <head>
+     <link rel="stylesheet" type="text/css" href="{% static '/rubricStyles.css' %}">
+ </head>
+    <body>
+      <h4 class="title-text"> Rubric Title</h3>
+         <input id="rubricTitle" type="text" class="input-field" name="rubricTitle" value="{{rubricTitle}}">          
+    <div class="div-alignment">
+      <div>
+        <input id="criteria1" type="text" class="criteria", name="criteria1" value="{{criteria1}}">
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input type="text" id="criteria2" class="criteria" name="criteria2" value="{{criteria2}}">
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input type="text" id="criteria3" class="criteria" name="criteria3" value="{{criteria3}}">
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input type="text" id="criteria4" class="criteria" name="criteria4" value="{{criteria4}}">          
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      </div>
+        <input type="text" class="proficiency" id="description1" name="description1" value="{{description1}}">
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input type="text" class="proficiency" id="description2" name="description2" value="{{description2}}">
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input type="text" id="description3" class="proficiency" name="description3" value="{{description3}}">
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input type="text" id="description4" class="proficiency" name="description4" value="{{description4}}">
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+       </div>        
+</body>
+</html>
