@@ -28,5 +28,10 @@
         <input type="submit" name="Rubrics Form" value="Rubrics form">       
     </form>
     
+    <form action="/deleteForm" method="post"> {% csrf_token %}
+        <input type="submit" name="Delete User Details"value="Delete Details"
+    </form> 
+        
+    
 </body>
 </html>

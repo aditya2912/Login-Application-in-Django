@@ -13,6 +13,8 @@ class UserDetailsForm(forms.Form):
     residence = forms.CharField(label='Residence', max_length=50)
     email = forms.CharField(label='Email', max_length=50)
     phoneNumber = forms.CharField(label='Phone Number', max_length=50)
+    nameFormObject = relationship(NameForm)
+    
     
     
 class Rubrics(forms.Form):

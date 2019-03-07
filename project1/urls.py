@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from projectapp.views import hello, login, registerPage, registerUser, loginPage, userLogin, enterUserDetails, enterUserDetailsPage, viewUserDetails , updateUserDetails, submitUpdatedUserDetails, logOut, rubricsForm, submitRubrics, viewRubricsForUser, adminLogOut, deleteUser
+from projectapp.views import hello, login, registerPage, registerUser, loginPage, userLogin, enterUserDetails, enterUserDetailsPage, viewUserDetails , updateUserDetails, submitUpdatedUserDetails, logOut, rubricsForm, submitRubrics, viewRubricsForUser, adminLogOut, deleteUser, deleteFormForUser
 
 
 urlpatterns = [
@@ -21,5 +21,6 @@ urlpatterns = [
     path(r'rubricSubmit/', submitRubrics),
     path(r'viewRubricsForUser/', viewRubricsForUser),
     path(r'adminLogOut/', adminLogOut),
-    path(r'deleteUser/', deleteUser)
+    path(r'deleteUser/', deleteUser),
+    path(r'deleteForm/', deleteFormForUser)
 ]

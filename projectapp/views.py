@@ -182,9 +182,14 @@ def viewUserDetails(request):
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
-    userRecord = session.query(UserDetails).filter(UserDetails.userName.in_([sessionUsername])).first()    
-    
-    return render(request, 'userDetails.html', {"username" : sessionUsername, "residence" : userRecord.residence, "email" : userRecord.email, "phoneNumber" : userRecord.phoneNumber})
+    userRecord = session.query(UserDetails).filter(UserDetails.userName.in_([sessionUsername])).first() 
+    print("++++++++++++++++++++++++++++", userRecord)
+    if userRecord == None: 
+        return render(request, 'invalidCredentials.html', {})
+         
+    else: 
+         return render(request, 'userDetails.html', {"username" : sessionUsername, "residence" : userRecord.residence, "email" : userRecord.email, "phoneNumber" : userRecord.phoneNumber})
+        
 
 
 def updateUserDetails(request):
@@ -348,4 +353,19 @@ def deleteUser(request):
             deleteUserNameAndPassword(userName)
             
         except IOError:
-            return render(request, 'invalidCredentials.html', {s})
+            return render(request, 'invalidCredentials.html', {})
+        
+def deleteFormForUser(request):
+    username = request.POST.get('username', '')
+    formEngine = create_engine('sqlite:///UserDetailsDatabase.db')
+    conn = engine.connect()
+    Base = declarative_base()
+    Base.metadata.bind = formEngine
+    DBSession = sessionmaker(bind = formEngine)
+    session = DBSession()
+    userDetails = session.query(UserDetails).filter(UserDetails.userName.in_([username])).first()
+    try:
+        session.delete(userDetails)
+        session.commit()
+    
+    
